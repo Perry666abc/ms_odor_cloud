@@ -1,0 +1,7 @@
+.DS_Store
+**/.DS_Store
+__pycache__/
+*.py[cod]
+*$py.class
+.idea/workspace.xml
+src/.idea/workspace.xml

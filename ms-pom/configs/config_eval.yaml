@@ -1,0 +1,61 @@
+train:
+  params:
+    epochs: 101
+    kfold_epochs: 101
+    batch_size: 64
+    learning_rate: 0.00003
+    weight_decay: 0.01
+    test_size: 0.2
+    val_size: 0.2
+    patience: 100
+    use_pos_weight: true
+    num_workers: 4
+    t_0: 50
+    t_mult: 2
+    random_seed: 42
+    sigmoid_threshold: 0.5
+    enable_kfold: true
+    data_path: "./datasets/curated_GS_LF_eval_template.csv"
+    best_checkpoint_path: "./best_checkpoints/best_model.pt"
+    last_checkpoint_path: "./last_checkpoints/best_model.pt"
+    optimizer: "lion"
+    enable_ensemble: true
+    kfold_k: 5
+    
+model:
+  params:
+    mpnn_node_input_dim: 137
+    mpnn_node_hidden_dim: 63
+    mpnn_edge_input_dim: 7
+    mpnn_edge_hidden_dim: 7
+    mpnn_num_layers: 3
+    readout_type: "global_add_pool"
+    readout_dim: 152
+    dropout_size: 0.2
+    bn_layers: [1, 1, 1, 1]
+    fnn_num_layers: 4
+    fnn_hidden_dim: [1024, 512, 392, 256]
+    num_tasks: 138
+    pom_dim: 256
+    mpnn_proj_type: "gru"
+    use_atten: false
+    use_fp: false
+    fp_dim: 1024
+
+hpo:
+  enable: false
+  n_trials: 1
+  epochs: 1
+  params:
+    # 模型参数
+    mpnn_num_layers: [2, 3]          # 动态范围
+    bn_layers: [[0,0,0,0], [0, 0, 0, 1], [1, 0, 0, 1]]  # 动态选项
+    dropout_size: [0.0, 0.1, 0.3]         # 动态范围
+    readout_type: ["set2set", "global_add_pool", "global_mean_pool"]  # 动态选项
+    mpnn_proj_type: ["gru","gin"] # 动态选项
+    # 训练参数
+    learning_rate: [9e-5,2e-4]      # 动态范围
+    weight_decay: [9e-3,2e-2]
+    t_0: [50]                # 动态选项
+    t_mult: [2]              # 动态选项
+    
